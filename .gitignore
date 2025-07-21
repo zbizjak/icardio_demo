@@ -6,5 +6,4 @@
 
 best_model.pth
 *.pth
-test_results/
 training_curves.png
