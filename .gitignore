@@ -1,0 +1,10 @@
+/labels
+/lv_diast_data/images
+/lv_diast_data/images_with_labels
+/lv_diast_labels
+/png-cache/01
+
+best_model.pth
+*.pth
+test_results/
+training_curves.png
