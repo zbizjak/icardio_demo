@@ -37,6 +37,10 @@ The model detects 4 key anatomical landmarks required for LV diastolic diameter 
 ├── requirements.txt        # Python dependencies
 ├── Readme.md               # This file
 │
+├── docs/                   # Documentation images
+│   ├── result_example_1.png # Example result visualization
+│   └── result_example_2.png # Example result visualization
+│
 ├── labels/                 # Original label files (required)
 │   ├── labels-all.json     # All annotations
 │   ├── labels-train.json   # Training set labels
@@ -145,6 +149,8 @@ docker run --rm --gpus all --shm-size=8g -v $(pwd):/icardio lv-detection python 
 - `best_model.pth`: Best model weights based on validation loss
 - `training_curves.png`: Training and validation loss curves
 
+> **Note**: The trained model file (`best_model.pth`) is not included in this repository due to its large size (>300MB). You will need to train the model yourself using the provided training script.
+
 ### 5. Test Model
 
 ```bash
@@ -158,6 +164,26 @@ docker run --rm --gpus all --shm-size=8g -v $(pwd):/icardio lv-detection python 
 - `--save_dir`: Directory to save results (default: `test_results`)
 
 ## 📊 Results and Evaluation
+
+### Example Results
+
+The model successfully detects LV diastolic diameter measurement points on cardiac ultrasound images:
+
+![Example Result 1](docs/result_example_1.png)
+*Example 1: Model predictions (empty circles) vs ground truth (filled circles) with diameter measurements*
+
+![Example Result 2](docs/result_example_2.png)  
+*Example 2: Accurate landmark detection with connecting lines showing prediction errors*
+
+**Legend:**
+- 🟢 **Green**: lv-ivs-top (top of interventricular septum)
+- 🟡 **Yellow**: lv-ivs-bottom (bottom of interventricular septum)  
+- 🔵 **Blue**: lv-pw-top (top of posterior wall)
+- 🟣 **Magenta**: lv-pw-bottom (bottom of posterior wall)
+- **Filled circles**: Ground truth landmarks
+- **Empty circles**: Model predictions
+- **White lines**: Error vectors between GT and predictions
+- **Colored lines**: Diameter measurements (thick=GT, thin=predicted)
 
 ### Test Output
 
@@ -205,8 +231,9 @@ The test script generates comprehensive evaluation results:
 
 1. **GPU Memory Error**: Reduce `--batch_size` (try 8 or 4)
 2. **Shared Memory Error**: Increase `--shm-size` or set `num_workers=0`
-3. **Model File Too Large**: The `.gitignore` excludes `*.pth` files from git
-4. **Missing Data**: Ensure `labels/` and `png-cache/` directories are present
+3. **Model File Too Large**: The `.gitignore` excludes `*.pth` files from git (models are >300MB)
+4. **Missing Trained Model**: Train the model first using the training script - pre-trained models are not provided due to file size
+5. **Missing Data**: Ensure `labels/` and `png-cache/` directories are present
 
 ### Performance Tips
 
